@@ -1,0 +1,38 @@
+{
+  "name": "discord-typescript-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cls && node build/index.js",
+    "build": "tsc",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "Kevmok",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^1.1.0",
+    "@types/node": "^18.7.14",
+    "chalk": "^4.1.2",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.0.2",
+    "eslint-config-prettier": "^8.9.0",
+    "mongoose": "^6.5.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.46.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "prettier": "3.0.0",
+    "typescript": "^4.8.2"
+  },
+  "overrides": {
+    "discord-api-types": "0.37.20"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
+}
