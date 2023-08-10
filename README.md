@@ -78,13 +78,13 @@ $ pnpm run db:push
 $ pnpm run db:studio
 ```
 
-## Acknowledgments
+## Acknowledgments 🔥
 
 Big Props to [MericcaN41](https://github.com/MericcaN41) for the [discord.js v14 template](https://github.com/MericcaN41/discordjs-v14-template-ts) that I used as a base for this template.
 
-- [Drizzle](https://orm.drizzle.team/)
-- [Zod](https://zod.dev/)
-- [Discord.js](https://discord.js.org/#/)
+- [Drizzle](https://orm.drizzle.team/) - 🔥 ORM
+- [Zod](https://zod.dev/) - 🔥 validation library
+- [Discord.js](https://discord.js.org/#/) - 🔥 discord library
 
 ## License
 
