@@ -16,6 +16,7 @@
 - 🕛 Cooldowns
 - 🏴 Detailed Permissions
 - 💪 Event & Command handlers
+- 🐶 Husky hooks
 
 ## Installation, Build and Run
 
