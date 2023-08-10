@@ -78,7 +78,7 @@ $ pnpm run db:push
 $ pnpm run db:studio
 ```
 
-## References
+## Acknowledgments
 
 Big Props to [MericcaN41](https://github.com/MericcaN41) for the [discord.js v14 template](https://github.com/MericcaN41/discordjs-v14-template-ts) that I used as a base for this template.
 
