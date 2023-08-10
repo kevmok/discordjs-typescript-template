@@ -7,5 +7,6 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {},
-  "root": true
+  "root": true,
+  "ignorePatterns": ["drizzle.config.ts"]
 }
