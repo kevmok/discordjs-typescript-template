@@ -1,10 +1,12 @@
 import {
+  ChatInputCommandInteraction,
+  ColorResolvable,
+  EmbedBuilder,
   SlashCommandBuilder,
   TextChannel,
-  EmbedBuilder,
-  ColorResolvable,
 } from 'discord.js';
-import { SlashCommand } from '../types';
+
+import { SlashCommand } from '@typings/index';
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -67,22 +69,27 @@ const command: SlashCommand = {
         { name: 'LightGrey', value: 'LightGrey' },
         { name: 'DarkNavy', value: 'DarkNavy' },
       ];
-      let filtered: { name: string; value: string }[] = [];
-      for (let i = 0; i < choices.length; i++) {
-        const choice = choices[i];
-        if (choice.name.includes(focusedValue)) filtered.push(choice);
-      }
+      // const filtered: { name: string; value: string }[] = [];
+      // for (let i = 0; i < choices.length; i++) {
+      //   const choice = choices[i];
+      //   if (choice.name.includes(focusedValue)) filtered.push(choice);
+      // }
+      const filtered = choices.filter((choice) =>
+        choice.name.toLowerCase().includes(focusedValue.toLowerCase()),
+      );
       await interaction.respond(filtered);
     } catch (error) {
       console.log(`Error: ${error.message}`);
     }
   },
-  execute: async (interaction) => {
+  execute: async (interaction: ChatInputCommandInteraction) => {
     try {
       await interaction.deferReply({ ephemeral: true });
       const options: { [key: string]: string | number | boolean } = {};
-      if (!interaction.options)
-        return interaction.editReply({ content: 'Something went wrong...' });
+      if (!interaction.options) {
+        await interaction.editReply({ content: 'Something went wrong...' });
+        return;
+      }
       for (let i = 0; i < interaction.options.data.length; i++) {
         const element = interaction.options.data[i];
         if (element.name && element.value)
@@ -102,11 +109,12 @@ const command: SlashCommand = {
           text: 'Test embed message',
           iconURL: interaction.client.user?.avatarURL() || undefined,
         });
-      let selectedTextChannel = interaction.channel?.client.channels.cache.get(
-        options.channel.toString(),
-      ) as TextChannel;
+      const selectedTextChannel =
+        interaction.channel?.client.channels.cache.get(
+          options.channel.toString(),
+        ) as TextChannel;
       selectedTextChannel.send({ embeds: [embed] });
-      return interaction.editReply({
+      await interaction.editReply({
         content: 'Embed message successfully sent.',
       });
     } catch (error) {

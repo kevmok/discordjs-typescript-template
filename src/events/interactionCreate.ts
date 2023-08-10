@@ -1,61 +1,68 @@
-import { Interaction } from 'discord.js';
-import { BotEvent } from '../types';
+import { BotEvent, SlashCommand } from '@typings/index';
+import { ChatInputCommandInteraction, Interaction } from 'discord.js';
 
 const event: BotEvent = {
   name: 'interactionCreate',
-  execute: (interaction: Interaction) => {
-    if (interaction.isChatInputCommand()) {
-      let command = interaction.client.slashCommands.get(
-        interaction.commandName,
-      );
-      let cooldown = interaction.client.cooldowns.get(
-        `${interaction.commandName}-${interaction.user.username}`,
-      );
-      if (!command) return;
-      if (command.cooldown && cooldown) {
-        if (Date.now() < cooldown) {
-          interaction.reply(
-            `You have to wait ${Math.floor(
-              Math.abs(Date.now() - cooldown) / 1000,
-            )} second(s) to use this command again.`,
-          );
-          setTimeout(() => interaction.deleteReply(), 5000);
-          return;
-        }
-        interaction.client.cooldowns.set(
-          `${interaction.commandName}-${interaction.user.username}`,
-          Date.now() + command.cooldown * 1000,
-        );
-        setTimeout(() => {
-          interaction.client.cooldowns.delete(
-            `${interaction.commandName}-${interaction.user.username}`,
-          );
-        }, command.cooldown * 1000);
-      } else if (command.cooldown && !cooldown) {
-        interaction.client.cooldowns.set(
-          `${interaction.commandName}-${interaction.user.username}`,
-          Date.now() + command.cooldown * 1000,
-        );
-      }
-      command.execute(interaction);
-    } else if (interaction.isAutocomplete()) {
-      const command = interaction.client.slashCommands.get(
-        interaction.commandName,
-      );
-      if (!command) {
-        console.error(
-          `No command matching ${interaction.commandName} was found.`,
+  execute: async (interaction: Interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    const command = getCommand(interaction);
+    if (!command) return;
+
+    if (command.cooldown) {
+      const cooldownKey = `${interaction.commandName}-${interaction.user.id}`;
+      const cooldown = interaction.client.cooldowns.get(cooldownKey) ?? 0;
+      const remainingCooldown = Math.max(cooldown - Date.now(), 0);
+
+      if (remainingCooldown > 0) {
+        await interaction.deferReply({ ephemeral: true });
+        await interaction.followUp(
+          `You have to wait ${Math.ceil(
+            remainingCooldown / 1000,
+          )} second(s) to use this command again.`,
         );
         return;
       }
-      try {
-        if (!command.autocomplete) return;
-        command.autocomplete(interaction);
-      } catch (error) {
-        console.error(error);
+
+      interaction.client.cooldowns.set(
+        cooldownKey,
+        Date.now() + command.cooldown * 1000,
+      );
+      setTimeout(
+        () => interaction.client.cooldowns.delete(cooldownKey),
+        command.cooldown * 1000,
+      );
+    }
+
+    await interaction.deferReply({ ephemeral: true });
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error(error);
+      await interaction.followUp({
+        content: 'An error occurred while executing this command.',
+        ephemeral: true,
+      });
+    } finally {
+      if (interaction.deferred || interaction.replied) {
+        await interaction.deleteReply();
       }
     }
   },
 };
+
+function getCommand(
+  interaction: ChatInputCommandInteraction,
+): SlashCommand | undefined {
+  const command = interaction.client.slashCommands.get(interaction.commandName);
+  if (!command) {
+    interaction.followUp({
+      content: 'This command does not exist.',
+      ephemeral: true,
+    });
+    return undefined;
+  }
+  return command;
+}
 
 export default event;

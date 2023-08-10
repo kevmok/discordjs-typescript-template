@@ -1,83 +1,84 @@
-import { ChannelType, Message } from 'discord.js';
-import {
-  checkPermissions,
-  getGuildOption,
-  sendTimedMessage,
-} from '../functions';
-import { BotEvent } from '../types';
-import mongoose from 'mongoose';
+import { ChannelType, GuildMember, Message } from 'discord.js';
+import { BotEvent } from '@typings/index';
+import { checkPermissions, sendTimedMessage } from '@utils/functions';
+import { db } from '@db/index';
+import { SelectPrefixSchema, generic } from '@db/schema/generic';
+import { eq } from 'drizzle-orm';
 
 const event: BotEvent = {
   name: 'messageCreate',
   execute: async (message: Message) => {
-    if (!message.member || message.member.user.bot) return;
-    if (!message.guild) return;
-    let prefix = process.env.PREFIX;
-    if (mongoose.connection.readyState === 1) {
-      let guildPrefix = await getGuildOption(message.guild, 'prefix');
-      if (guildPrefix) prefix = guildPrefix;
-    }
+    if (!message.guild || message.author.bot) return;
 
-    if (!message.content.startsWith(prefix)) return;
-    if (message.channel.type !== ChannelType.GuildText) return;
+    const prefix = await getPrefix();
+    if (
+      !message.content.startsWith(prefix) ||
+      message.channel.type !== ChannelType.GuildText
+    )
+      return;
 
-    let args = message.content.substring(prefix.length).split(' ');
-    let command = message.client.commands.get(args[0]);
+    const [commandName, ...args] = message.content
+      .slice(prefix.length)
+      .trim()
+      .split(/ +/);
+    const command =
+      message.client.commands.get(commandName) ||
+      message.client.commands.find((cmd) => cmd.aliases.includes(commandName));
+    if (!command) return;
 
-    if (!command) {
-      let commandFromAlias = message.client.commands.find((command) =>
-        command.aliases.includes(args[0]),
-      );
-      if (commandFromAlias) command = commandFromAlias;
-      else return;
-    }
-
-    let cooldown = message.client.cooldowns.get(
-      `${command.name}-${message.member.user.username}`,
-    );
-    let neededPermissions = checkPermissions(
-      message.member,
+    const cooldownKey = `${command.name}-${message.author.id}`;
+    const cooldown = message.client.cooldowns.get(cooldownKey) ?? 0;
+    const neededPermissions = checkPermissions(
+      message.member as GuildMember,
       command.permissions,
     );
-    if (neededPermissions !== null)
+    if (neededPermissions) {
       return sendTimedMessage(
-        `
-            You don't have enough permissions to use this command. 
-            \n Needed permissions: ${neededPermissions.join(', ')}
-            `,
+        `You don't have enough permissions to use this command.`,
         message.channel,
         5000,
       );
-
-    if (command.cooldown && cooldown) {
-      if (Date.now() < cooldown) {
-        sendTimedMessage(
-          `You have to wait ${Math.floor(
-            Math.abs(Date.now() - cooldown) / 1000,
-          )} second(s) to use this command again.`,
-          message.channel,
-          5000,
-        );
-        return;
-      }
-      message.client.cooldowns.set(
-        `${command.name}-${message.member.user.username}`,
-        Date.now() + command.cooldown * 1000,
-      );
-      setTimeout(() => {
-        message.client.cooldowns.delete(
-          `${command?.name}-${message.member?.user.username}`,
-        );
-      }, command.cooldown * 1000);
-    } else if (command.cooldown && !cooldown) {
-      message.client.cooldowns.set(
-        `${command.name}-${message.member.user.username}`,
-        Date.now() + command.cooldown * 1000,
+    } else if (cooldown > Date.now()) {
+      const remainingCooldown = Math.ceil((cooldown - Date.now()) / 1000);
+      return sendTimedMessage(
+        `Please wait ${remainingCooldown} second(s) before reusing the \`${command.name}\` command.`,
+        message.channel,
+        5000,
       );
     }
 
-    command.execute(message, args);
+    message.client.cooldowns.set(
+      cooldownKey,
+      Date.now() + command.cooldown * 1000,
+    );
+    setTimeout(
+      () => message.client.cooldowns.delete(cooldownKey),
+      command.cooldown * 1000,
+    );
+
+    try {
+      await command.execute(message, args);
+    } catch (error) {
+      console.error(error);
+      return sendTimedMessage(
+        `An error occurred while executing the \`${command.name}\` command.`,
+        message.channel,
+        5000,
+      );
+    }
   },
 };
+
+async function getPrefix(): Promise<string> {
+  const result = SelectPrefixSchema.safeParse({ key: 'prefix' });
+  if (result.success) {
+    const [genericRecord] = await db
+      .select()
+      .from(generic)
+      .where(eq(generic.key, 'prefix'));
+    return genericRecord.value;
+  }
+  return '.';
+}
 
 export default event;

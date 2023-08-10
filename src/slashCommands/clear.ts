@@ -1,9 +1,11 @@
 import {
   ChannelType,
+  ChatInputCommandInteraction,
   PermissionFlagsBits,
   SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommand } from '../types';
+
+import { SlashCommand } from '@typings/index';
 
 const ClearCommand: SlashCommand = {
   command: new SlashCommandBuilder()
@@ -17,24 +19,27 @@ const ClearCommand: SlashCommand = {
         .setDescription('Message amount to be cleared');
     })
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
-  execute: (interaction) => {
-    let messageCount = Number(interaction.options.get('messagecount')?.value);
-    interaction.channel?.messages
-      .fetch({ limit: messageCount })
-      .then(async (msgs) => {
-        if (interaction.channel?.type === ChannelType.DM) return;
-        const deletedMessages = await interaction.channel?.bulkDelete(
-          msgs,
-          true,
-        );
-        if (deletedMessages?.size === 0)
-          interaction.reply('No messages were deleted.');
-        else
-          interaction.reply(
-            `Successfully deleted ${deletedMessages?.size} message(s)`,
-          );
-        setTimeout(() => interaction.deleteReply(), 5000);
-      });
+  execute: async (interaction: ChatInputCommandInteraction) => {
+    // interaction;
+    const messageCount = interaction.options.getInteger('messagecount');
+    if (!interaction.channel || interaction.channel.type === ChannelType.DM)
+      return;
+    const messages = await interaction.channel.messages.fetch({
+      limit: messageCount as number,
+    });
+    if (messages.size === 0) {
+      interaction.deferReply({ ephemeral: true });
+      interaction.followUp('No messages were deleted.');
+      return;
+    }
+    const deletedMessages = await interaction.channel.bulkDelete(
+      messages,
+      true,
+    );
+    await interaction.followUp(
+      `Successfully deleted ${deletedMessages.size} message(s)`,
+    );
+    setTimeout(async () => await interaction.deleteReply(), 5000);
   },
   cooldown: 10,
 };

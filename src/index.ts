@@ -1,15 +1,10 @@
-import {
-  Client,
-  GatewayIntentBits,
-  Collection,
-  PermissionFlagsBits,
-} from 'discord.js';
+import { Client, GatewayIntentBits, Collection } from 'discord.js';
 const { Guilds, MessageContent, GuildMessages, GuildMembers } =
   GatewayIntentBits;
 const client = new Client({
   intents: [Guilds, MessageContent, GuildMessages, GuildMembers],
 });
-import { Command, SlashCommand } from './types';
+import { Command, SlashCommand } from '@typings/index';
 import { config } from 'dotenv';
 import { readdirSync } from 'fs';
 import { join } from 'path';
@@ -21,6 +16,7 @@ client.cooldowns = new Collection<string, number>();
 
 const handlersDir = join(__dirname, './handlers');
 readdirSync(handlersDir).forEach((handler) => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   require(`${handlersDir}/${handler}`)(client);
 });
 

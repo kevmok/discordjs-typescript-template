@@ -1,10 +1,9 @@
 import { PermissionFlagsBits } from 'discord.js';
-import { Command } from '../types';
-
+import { Command } from '@typings/index';
 const command: Command = {
   name: 'greet',
-  execute: (message, args) => {
-    let toGreet = message.mentions.members?.first();
+  execute: (message) => {
+    const toGreet = message.mentions.members?.first();
     message.channel.send(
       `Hello there ${
         toGreet ? toGreet.user.username : message.member?.user.username

@@ -1,18 +1,17 @@
 import {
   SlashCommandBuilder,
-  ChannelType,
-  TextChannel,
   EmbedBuilder,
+  ChatInputCommandInteraction,
 } from 'discord.js';
-import { getThemeColor } from '../functions';
-import { SlashCommand } from '../types';
+import { getThemeColor } from '@utils/functions';
+import { SlashCommand } from '@typings/index';
 
 const command: SlashCommand = {
   command: new SlashCommandBuilder()
     .setName('ping')
     .setDescription("Shows the bot's ping"),
-  execute: (interaction) => {
-    interaction.reply({
+  execute: async (interaction: ChatInputCommandInteraction) => {
+    await interaction.followUp({
       embeds: [
         new EmbedBuilder()
           .setAuthor({ name: 'MRC License' })
