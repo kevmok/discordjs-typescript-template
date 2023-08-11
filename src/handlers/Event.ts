@@ -10,7 +10,7 @@ module.exports = (client: Client) => {
   const eventsDir = join(__dirname, '../events');
 
   readdirSync(eventsDir).forEach((file) => {
-    if (!file.endsWith('.js')) return;
+    // if (!file.endsWith('.js')) return;
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const event: BotEvent = require(`${eventsDir}/${file}`).default;
     event.once

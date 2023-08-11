@@ -12,9 +12,8 @@ module.exports = (client: Client) => {
 
   const slashCommandsDir = join(__dirname, '../slashCommands');
   const commandsDir = join(__dirname, '../commands');
-
   readdirSync(slashCommandsDir).forEach((file) => {
-    if (!file.endsWith('.js')) return;
+    // if (!file.endsWith('.js')) return;
     const command: SlashCommand =
       require(`${slashCommandsDir}/${file}`).default;
     slashCommands.push(command.command);
@@ -22,7 +21,7 @@ module.exports = (client: Client) => {
   });
 
   readdirSync(commandsDir).forEach((file) => {
-    if (!file.endsWith('.js')) return;
+    // if (!file.endsWith('.js')) return;
     const command: Command = require(`${commandsDir}/${file}`).default;
     commands.push(command);
     client.commands.set(command.name, command);

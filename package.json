@@ -2,11 +2,11 @@
   "name": "discord-typescript-template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node -r dotenv/config ./dist/index.js",
     "dev": "nodemon --exec tsx -r dotenv/config --no-warnings src/index.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "prepare": "husky install",
     "db:drop": "drizzle-kit drop --config=drizzle.config.ts",
     "db:generate": "drizzle-kit generate:pg",
@@ -29,6 +29,7 @@
     "nodemon": "^3.0.1",
     "pg": "^8.11.2",
     "postgres": "^3.3.5",
+    "tsc-alias": "^1.8.7",
     "tsx": "^3.12.7"
   },
   "devDependencies": {

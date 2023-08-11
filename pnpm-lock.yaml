@@ -37,6 +37,9 @@ dependencies:
   postgres:
     specifier: ^3.3.5
     version: 3.3.5
+  tsc-alias:
+    specifier: ^1.8.7
+    version: 1.8.7
   tsx:
     specifier: ^3.12.7
     version: 3.12.7
@@ -1192,7 +1195,6 @@ packages:
         integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==,
       }
     engines: { node: '>=8' }
-    dev: true
 
   /astral-regex@2.0.0:
     resolution:
@@ -1435,7 +1437,6 @@ packages:
         integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==,
       }
     engines: { node: ^12.20.0 || >=14 }
-    dev: true
 
   /concat-map@0.0.1:
     resolution:
@@ -1524,7 +1525,6 @@ packages:
     engines: { node: '>=8' }
     dependencies:
       path-type: 4.0.0
-    dev: true
 
   /discord-api-types@0.37.51:
     resolution:
@@ -2019,7 +2019,6 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.5
-    dev: true
 
   /fast-json-stable-stringify@2.1.0:
     resolution:
@@ -2209,7 +2208,6 @@ packages:
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
-    dev: true
 
   /graphemer@1.4.0:
     resolution:
@@ -2621,7 +2619,6 @@ packages:
         integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==,
       }
     engines: { node: '>= 8' }
-    dev: true
 
   /micromatch@4.0.5:
     resolution:
@@ -2632,7 +2629,6 @@ packages:
     dependencies:
       braces: 3.0.2
       picomatch: 2.3.1
-    dev: true
 
   /mimic-fn@2.1.0:
     resolution:
@@ -2752,6 +2748,14 @@ packages:
       {
         integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==,
       }
+    dev: false
+
+  /mylas@2.1.13:
+    resolution:
+      {
+        integrity: sha512-+MrqnJRtxdF+xngFfUUkIMQrUUL0KsxbADUkn23Z/4ibGg192Q+z+CQyiYwvWTsYjJygmMR8+w3ZDa98Zh6ESg==,
+      }
+    engines: { node: '>=12.0.0' }
     dev: false
 
   /natural-compare-lite@1.4.0:
@@ -2949,7 +2953,6 @@ packages:
         integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==,
       }
     engines: { node: '>=8' }
-    dev: true
 
   /peek-readable@5.0.0:
     resolution:
@@ -3063,6 +3066,15 @@ packages:
     hasBin: true
     dev: true
 
+  /plimit-lit@1.5.0:
+    resolution:
+      {
+        integrity: sha512-Eb/MqCb1Iv/ok4m1FqIXqvUKPISufcjZ605hl3KM/n8GaX8zfhtgdLwZU3vKjuHGh2O9Rjog/bHTq8ofIShdng==,
+      }
+    dependencies:
+      queue-lit: 1.5.0
+    dev: false
+
   /postgres-array@2.0.0:
     resolution:
       {
@@ -3133,6 +3145,13 @@ packages:
         integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==,
       }
     engines: { node: '>=6' }
+
+  /queue-lit@1.5.0:
+    resolution:
+      {
+        integrity: sha512-IslToJ4eiCEE9xwMzq3viOO5nH8sUWUCwoElrhNMozzr9IIt2qqvB4I+uHu/zJTQVqc9R5DFwok4ijNK1pU3fA==,
+      }
+    dev: false
 
   /queue-microtask@1.2.3:
     resolution:
@@ -3318,7 +3337,6 @@ packages:
         integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==,
       }
     engines: { node: '>=8' }
-    dev: true
 
   /slice-ansi@3.0.0:
     resolution:
@@ -3601,6 +3619,21 @@ packages:
       {
         integrity: sha512-k43M7uCG1AkTyxgnmI5MPwKoUvS/bRvLvUb7+Pgpdlmok8AoqmUaZxUUw8zKM5B1lqZrt41GjYgnvAi0fppqgQ==,
       }
+    dev: false
+
+  /tsc-alias@1.8.7:
+    resolution:
+      {
+        integrity: sha512-59Q/zUQa3miTf99mLbSqaW0hi1jt4WoG8Uhe5hSZJHQpSoFW9eEwvW7jlKMHXWvT+zrzy3SN9PE/YBhQ+WVydA==,
+      }
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      commander: 9.5.0
+      globby: 11.1.0
+      mylas: 2.1.13
+      normalize-path: 3.0.0
+      plimit-lit: 1.5.0
     dev: false
 
   /tslib@2.5.0:
