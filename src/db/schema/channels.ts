@@ -1,17 +1,13 @@
-import { text, pgTable, integer, pgEnum } from 'drizzle-orm/pg-core';
+import { text, pgTable, integer } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-
-const channelEnum = pgEnum('channel_type', [
-  'general',
-  'success',
-  'announcement',
-]);
 
 export const channels = pgTable('channels', {
   channel_id: integer('channel_id').primaryKey(),
   channel_name: text('channel_name').notNull(),
   discord_role_id: text('user_role_id'),
-  channel_type: channelEnum('channel_type').default('general'),
+  channel_type: text('channel_type', {
+    enum: ['general', 'success', 'announcement'],
+  }).default('general'),
 });
 
 // Schema for inserting a channel

@@ -18,7 +18,7 @@ dependencies:
     version: 16.0.2
   drizzle-orm:
     specifier: ^0.28.1
-    version: 0.28.1(postgres@3.3.5)
+    version: 0.28.1(pg@8.11.2)(postgres@3.3.5)
   drizzle-zod:
     specifier: ^0.5.0
     version: 0.5.0(drizzle-orm@0.28.1)(zod@3.21.4)
@@ -31,6 +31,9 @@ dependencies:
   nodemon:
     specifier: ^3.0.1
     version: 3.0.1
+  pg:
+    specifier: ^8.11.2
+    version: 8.11.2
   postgres:
     specifier: ^3.3.5
     version: 3.3.5
@@ -1263,6 +1266,14 @@ packages:
         integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==,
       }
 
+  /buffer-writer@2.0.0:
+    resolution:
+      {
+        integrity: sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==,
+      }
+    engines: { node: '>=4' }
+    dev: false
+
   /buffer@5.7.1:
     resolution:
       {
@@ -1598,7 +1609,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.1(postgres@3.3.5):
+  /drizzle-orm@0.28.1(pg@8.11.2)(postgres@3.3.5):
     resolution:
       {
         integrity: sha512-6ms2pVxvkBJtuP1BZTUCzLLkr+iK/cNgd+tCw+I5/PoM8PB9kXaYoW9yNe/cnaXb0TLJ1gDEndDIyQdRX7zCdQ==,
@@ -1663,6 +1674,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
+      pg: 8.11.2
       postgres: 3.3.5
     dev: false
 
@@ -1675,7 +1687,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.28.1(postgres@3.3.5)
+      drizzle-orm: 0.28.1(pg@8.11.2)(postgres@3.3.5)
       zod: 3.21.4
     dev: false
 
@@ -2886,6 +2898,13 @@ packages:
       aggregate-error: 3.1.0
     dev: true
 
+  /packet-reader@1.0.0:
+    resolution:
+      {
+        integrity: sha512-HAKu/fG3HpHFO0AA8WE8q2g+gBJaZ9MG7fcKk+IJPLTGAD6Psw4443l+9DGRbOIh3/aXr7Phy0TjilYivJo5XQ==,
+      }
+    dev: false
+
   /parent-module@1.0.1:
     resolution:
       {
@@ -2940,6 +2959,94 @@ packages:
     engines: { node: '>=14.16' }
     dev: false
 
+  /pg-cloudflare@1.1.1:
+    resolution:
+      {
+        integrity: sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==,
+      }
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /pg-connection-string@2.6.2:
+    resolution:
+      {
+        integrity: sha512-ch6OwaeaPYcova4kKZ15sbJ2hKb/VP48ZD2gE7i1J+L4MspCtBMAx8nMgz7bksc7IojCIIWuEhHibSMFH8m8oA==,
+      }
+    dev: false
+
+  /pg-int8@1.0.1:
+    resolution:
+      {
+        integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==,
+      }
+    engines: { node: '>=4.0.0' }
+    dev: false
+
+  /pg-pool@3.6.1(pg@8.11.2):
+    resolution:
+      {
+        integrity: sha512-jizsIzhkIitxCGfPRzJn1ZdcosIt3pz9Sh3V01fm1vZnbnCMgmGl5wvGGdNN2EL9Rmb0EcFoCkixH4Pu+sP9Og==,
+      }
+    peerDependencies:
+      pg: '>=8.0'
+    dependencies:
+      pg: 8.11.2
+    dev: false
+
+  /pg-protocol@1.6.0:
+    resolution:
+      {
+        integrity: sha512-M+PDm637OY5WM307051+bsDia5Xej6d9IR4GwJse1qA1DIhiKlksvrneZOYQq42OM+spubpcNYEo2FcKQrDk+Q==,
+      }
+    dev: false
+
+  /pg-types@2.2.0:
+    resolution:
+      {
+        integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==,
+      }
+    engines: { node: '>=4' }
+    dependencies:
+      pg-int8: 1.0.1
+      postgres-array: 2.0.0
+      postgres-bytea: 1.0.0
+      postgres-date: 1.0.7
+      postgres-interval: 1.2.0
+    dev: false
+
+  /pg@8.11.2:
+    resolution:
+      {
+        integrity: sha512-l4rmVeV8qTIrrPrIR3kZQqBgSN93331s9i6wiUiLOSk0Q7PmUxZD/m1rQI622l3NfqBby9Ar5PABfS/SulfieQ==,
+      }
+    engines: { node: '>= 8.0.0' }
+    peerDependencies:
+      pg-native: '>=3.0.1'
+    peerDependenciesMeta:
+      pg-native:
+        optional: true
+    dependencies:
+      buffer-writer: 2.0.0
+      packet-reader: 1.0.0
+      pg-connection-string: 2.6.2
+      pg-pool: 3.6.1(pg@8.11.2)
+      pg-protocol: 1.6.0
+      pg-types: 2.2.0
+      pgpass: 1.0.5
+    optionalDependencies:
+      pg-cloudflare: 1.1.1
+    dev: false
+
+  /pgpass@1.0.5:
+    resolution:
+      {
+        integrity: sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==,
+      }
+    dependencies:
+      split2: 4.2.0
+    dev: false
+
   /picomatch@2.3.1:
     resolution:
       {
@@ -2955,6 +3062,40 @@ packages:
     engines: { node: '>=0.10' }
     hasBin: true
     dev: true
+
+  /postgres-array@2.0.0:
+    resolution:
+      {
+        integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==,
+      }
+    engines: { node: '>=4' }
+    dev: false
+
+  /postgres-bytea@1.0.0:
+    resolution:
+      {
+        integrity: sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==,
+      }
+    engines: { node: '>=0.10.0' }
+    dev: false
+
+  /postgres-date@1.0.7:
+    resolution:
+      {
+        integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==,
+      }
+    engines: { node: '>=0.10.0' }
+    dev: false
+
+  /postgres-interval@1.2.0:
+    resolution:
+      {
+        integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==,
+      }
+    engines: { node: '>=0.10.0' }
+    dependencies:
+      xtend: 4.0.2
+    dev: false
 
   /postgres@3.3.5:
     resolution:
@@ -3258,6 +3399,14 @@ packages:
       memory-pager: 1.5.0
     dev: false
     optional: true
+
+  /split2@4.2.0:
+    resolution:
+      {
+        integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==,
+      }
+    engines: { node: '>= 10.x' }
+    dev: false
 
   /streamsearch@1.1.0:
     resolution:
@@ -3643,6 +3792,14 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
+    dev: false
+
+  /xtend@4.0.2:
+    resolution:
+      {
+        integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==,
+      }
+    engines: { node: '>=0.4' }
     dev: false
 
   /yallist@4.0.0:
