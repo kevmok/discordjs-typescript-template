@@ -33,8 +33,6 @@ const event: BotEvent = {
         command.cooldown * 1000,
       );
     }
-
-    await interaction.deferReply({ ephemeral: true });
     try {
       await command.execute(interaction);
     } catch (error) {
@@ -43,24 +41,24 @@ const event: BotEvent = {
         content: 'An error occurred while executing this command.',
         ephemeral: true,
       });
-    } finally {
-      if (interaction.deferred || interaction.replied) {
-        await interaction.deleteReply();
-      }
     }
+    // } finally {
+    //   if (interaction.deferred || interaction.replied) {
+    //     await interaction.deleteReply();
+    //   }
+    // }
   },
 };
 
-function getCommand(
-  interaction: ChatInputCommandInteraction,
-): SlashCommand | undefined {
-  const command = interaction.client.slashCommands.get(interaction.commandName);
+function getCommand(interaction: ChatInputCommandInteraction): SlashCommand {
+  const command: SlashCommand = interaction.client.slashCommands.get(
+    interaction.commandName,
+  );
   if (!command) {
     interaction.followUp({
       content: 'This command does not exist.',
       ephemeral: true,
     });
-    return undefined;
   }
   return command;
 }

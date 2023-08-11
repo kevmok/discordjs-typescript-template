@@ -7,14 +7,18 @@ import { generic, updatePrefixSchema } from '@db/schema/generic';
 const command: Command = {
   name: 'changePrefix',
   execute: async (message, args) => {
-    const prefix = args[1];
+    console.log(args);
+    const prefix = args[0];
     if (!prefix) {
       message.channel.send('No prefix provided');
       return;
     }
     if (!message.guild) return;
 
-    const result = updatePrefixSchema.safeParse({ prefix });
+    const result = updatePrefixSchema.safeParse({
+      key: 'PREFIX',
+      value: prefix,
+    });
     if (!result.success) {
       message.channel.send('Invalid prefix provided');
       return;
@@ -23,8 +27,8 @@ const command: Command = {
     try {
       await db
         .update(generic)
-        .set({ key: result.data.value })
-        .where(eq(generic.key, 'prefix'));
+        .set({ value: result.data.value })
+        .where(eq(generic.key, 'PREFIX'));
       message.channel.send('Prefix successfully changed!');
     } catch (error) {
       message.channel.send('An error occurred while changing the prefix');

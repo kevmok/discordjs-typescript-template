@@ -20,7 +20,8 @@ const ClearCommand: SlashCommand = {
     })
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
   execute: async (interaction: ChatInputCommandInteraction) => {
-    // interaction;
+    interaction.deferReply({ ephemeral: true });
+
     const messageCount = interaction.options.getInteger('messagecount');
     if (!interaction.channel || interaction.channel.type === ChannelType.DM)
       return;
@@ -36,9 +37,10 @@ const ClearCommand: SlashCommand = {
       messages,
       true,
     );
-    await interaction.followUp(
-      `Successfully deleted ${deletedMessages.size} message(s)`,
-    );
+    await interaction.followUp({
+      content: `Successfully deleted ${deletedMessages.size} message(s)`,
+      ephemeral: true,
+    });
     setTimeout(async () => await interaction.deleteReply(), 5000);
   },
   cooldown: 10,
