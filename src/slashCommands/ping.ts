@@ -11,7 +11,7 @@ const command: SlashCommand = {
     .setName('ping')
     .setDescription("Shows the bot's ping"),
   execute: async (interaction: ChatInputCommandInteraction) => {
-    await interaction.deferReply(ç);
+    await interaction.deferReply();
     await interaction.followUp({
       embeds: [
         new EmbedBuilder()
