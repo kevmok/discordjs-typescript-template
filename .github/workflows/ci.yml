@@ -16,7 +16,6 @@ jobs:
         id: pnpm
         run: |
           npm i pnpm@latest -g
-          sed -i '/^use-node-version/d' .npmrc
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Setup cache
