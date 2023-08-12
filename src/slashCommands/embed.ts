@@ -80,9 +80,9 @@ const command: SlashCommand = {
   },
   execute: async (interaction: ChatInputCommandInteraction) => {
     try {
-      await interaction.deferReply();
+      await interaction.deferReply({ ephemeral: true });
 
-      const options: { [key: string]: string | number | boolean } = {};
+      const options: Record<string, string | number | boolean> = {};
       if (!interaction.options) {
         interaction.editReply({ content: 'Something went wrong...' });
         return;
@@ -94,7 +94,7 @@ const command: SlashCommand = {
       }
       const embed = new EmbedBuilder()
         .setColor(options.color.toString() as ColorResolvable)
-        .setTitle(options.title.toString())
+        .setTitle(interaction.options.getString('title', false) || 'Default')
         .setDescription(options.description.toString())
         .setAuthor({
           name: interaction.user.username || 'Default Name',
@@ -107,12 +107,11 @@ const command: SlashCommand = {
           iconURL: interaction.user.avatarURL() || undefined,
         });
 
-      const selectedTextChannel =
-        interaction.channel?.client.channels.cache.get(
-          options.channel.toString(),
-        ) as TextChannel;
+      const selectedChannel = interaction.options.getChannel(
+        'channel',
+      ) as TextChannel;
+      selectedChannel.send({ embeds: [embed] });
 
-      selectedTextChannel.send({ embeds: [embed] });
       interaction.editReply({
         content: 'Embed message successfully sent.',
       });

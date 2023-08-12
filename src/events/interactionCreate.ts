@@ -42,11 +42,6 @@ const event: BotEvent = {
         ephemeral: true,
       });
     }
-    // } finally {
-    //   if (interaction.deferred || interaction.replied) {
-    //     await interaction.deleteReply();
-    //   }
-    // }
   },
 };
 
