@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "build": "pnpm db:push && tsc && tsc-alias",
     "start": "node -r dotenv/config ./dist/index.js",
     "dev": "nodemon --exec tsx -r dotenv/config --no-warnings src/index.ts",
-    "build": "tsc && tsc-alias",
     "prepare": "husky install",
     "db:drop": "drizzle-kit drop --config=drizzle.config.ts",
     "db:generate": "drizzle-kit generate:pg",

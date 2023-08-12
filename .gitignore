@@ -129,7 +129,7 @@ dist
 .pnp.*
 
 # drizzle
-src/db/migrations
+# src/db/migrations
 
 # supabase
 supabase/
