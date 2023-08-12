@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "pnpm db:push && tsc && tsc-alias",
+    "build": "tsc && tsc-alias",
     "start": "node -r dotenv/config ./dist/index.js",
     "dev": "nodemon --exec tsx -r dotenv/config --no-warnings src/index.ts",
     "prepare": "husky install",
