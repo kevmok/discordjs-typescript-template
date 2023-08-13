@@ -4,6 +4,7 @@ import {
   EmbedBuilder,
   SlashCommandBuilder,
   TextChannel,
+  PermissionFlagsBits,
 } from 'discord.js';
 
 import { SlashCommand } from '@typings/index';
@@ -38,7 +39,9 @@ const command: SlashCommand = {
         .setRequired(true)
         .setAutocomplete(true);
     })
-    .setDescription('Create a new embed message.'),
+    .setDescription('Create a new embed message.')
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages),
+
   autocomplete: async (interaction) => {
     try {
       const focusedValue = interaction.options.getFocused();
